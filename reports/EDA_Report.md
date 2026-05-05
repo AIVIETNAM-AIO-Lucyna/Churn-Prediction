@@ -51,13 +51,24 @@ Phân tích qua biểu đồ Boxplot cho thấy một số biến có giá trị
 ## 6. Các nhân tố ảnh hưởng hàng đầu (Correlation Analysis)
 Dựa trên phân tích tương quan (Correlation) và biểu đồ Heatmap, 3 yếu tố có tác động mạnh nhất đến việc khách hàng rời bỏ là:
 
-1.  **Complain (0.248):** Những khách hàng từng khiếu nại có nguy cơ rời bỏ cao vượt trội. Đây là "Biến số vàng" cho mô hình.
-2.  **MaritalStatus_Single (0.178):** Nhóm khách hàng độc thân có xu hướng ít ràng buộc và dễ rời bỏ hơn.
-3.  **PreferedOrderCat_Mobile Phone (0.164):** Nhóm mua hàng điện tử/điện thoại thường có tính rủi ro cao về độ trung thành.
+1. **Complain (0.248):** Những khách hàng từng khiếu nại có nguy cơ rời bỏ cao vượt trội. Đây là "Biến số vàng" cho mô hình.
+2. **MaritalStatus_Single (0.178):** Nhóm khách hàng độc thân có xu hướng ít ràng buộc và dễ rời bỏ hơn.
+3. **PreferedOrderCat_Mobile Phone (0.164):** Nhóm mua hàng điện tử/điện thoại thường có tính rủi ro cao về độ trung thành.
 
 ---
 
-## 7. Kết luận và Bàn giao
+## 7. Khảo sát phân phối các biến số (Distribution Survey)
+Dựa trên biểu đồ Histogram và Boxplot cho các biến số quan trọng, chúng tôi ghi nhận các đặc điểm sau:
+
+- **Tenure (Thâm niên):** Phân phối lệch trái mạnh (Skewed Left). Lượng khách hàng mới chiếm đa số, đây là nhóm có rủi ro rời bỏ cao cần đặc biệt lưu ý.
+- **WarehouseToHome:** Xuất hiện "đuôi dài" về phía bên phải với nhiều điểm dị biệt. Kết quả này củng cố quyết định thực hiện **Capping (IQR)** để ổn định dữ liệu.
+- **OrderCount & CouponUsed:** Phân phối dạng bậc thang (Discrete), phản ánh thói quen mua sắm theo đợt hoặc theo chương trình khuyến mãi.
+- **CashbackAmount:** Có phân phối gần với phân phối chuẩn nhất, cho thấy đây là chính sách ổn định và có tác động tâm lý tích cực đến việc giữ chân khách hàng.
+- **Tổng kết:** Đa số các biến số quan trọng đều có phân phối lệch, việc sử dụng **Median (Trung vị)** cho các bước xử lý dữ liệu thiếu là hoàn toàn phù hợp và chính xác.
+
+---
+
+## 8. Kết luận và Bàn giao
 - **Trạng thái dữ liệu:** Đã được làm sạch, vá lỗi và chuẩn hóa sang dạng số (One-Hot Encoding).
 - **Phân chia dữ liệu:** Đã tách riêng tập **Train (80%)** và **Test (20%)** để đảm bảo khách quan.
 - **Khuyến nghị cho Modeling:** Sử dụng các thuật toán mạnh như **XGBoost** hoặc **Random Forest** để xử lý tốt Outliers đã giữ lại và tình trạng mất cân bằng dữ liệu.
