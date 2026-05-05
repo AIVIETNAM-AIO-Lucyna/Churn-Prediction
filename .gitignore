@@ -1,0 +1,5 @@
+# Giữ các file modeling và model ở máy cá nhân
+notebooks/02_modeling_and_training.ipynb
+models/*.pkl
+models/*.json
+notebooks/main.py
