@@ -16,7 +16,7 @@
 - góp ý:
     - nên bỏ cột ID trước khi traning
 
-===
+
 ## Về hình thức trình bày
 1. Cần chuẩn hóa đường dẫn theo tên đường dẫn *file project trên github (ảnh) sao cho có thể chạy file code sau khi clone project từ github về máy luôn (Các ad sẽ chạy lại file code của mình. mình cần chuẩn bị sao cho các ad clone về là có thể chạy file code luôn)
 
