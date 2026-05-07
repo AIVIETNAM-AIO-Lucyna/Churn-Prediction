@@ -1,6 +1,4 @@
-# Báo cáo Checklists
-
-## Về nội dung dữ liệu
+## Checklisst
 - Data Quality
     - Không còn missing values (hoặc đã xử lý rõ ràng)
     - Không duplicate (dữ liệu giống nhau trong bảng dữ liệu)
