@@ -17,12 +17,12 @@
     - nên bỏ cột ID trước khi traning
 
 ## Model
--Modeling Process
+- Modeling Process
     - Có baseline model
     - Có 4 model để so sánh
--Metrics
+- Metrics
     - Có Accuracy, Recall, F1, AUC
--Output
+- Output
     - best_model.pkl
     - model_results.csv
     - feature_importance.png
