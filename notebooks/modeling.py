@@ -201,3 +201,27 @@ print("Saved best model to: models/best_model.pkl")
 
 data_1 = joblib.load("models/best_model.pkl")
 print(data_1)
+
+
+#nga debug
+sample = X_test.iloc[[0]]
+
+pred = best_exp["Model_obj"].predict(sample)
+proba = best_exp["Model_obj"].predict_proba(sample)
+
+print("Prediction:", pred)
+print("Probability:", proba)
+
+y_proba = best_exp["Model_obj"].predict_proba(X_test)[:,1]
+
+print("Min probability:", y_proba.min())
+print("Max probability:", y_proba.max())
+print("Mean probability:", y_proba.mean())
+
+print("\nTop 10 highest probabilities:")
+print(sorted(y_proba, reverse=True)[:10])
+
+plt.hist(y_proba, bins=20)
+plt.xlabel("Churn Probability")
+plt.ylabel("Count")
+plt.show()
