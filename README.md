@@ -60,6 +60,7 @@ source .venv/bin/activate
 ```
 
 ### 2. Install required libraries
+Note: Install python --version 3.11 or 3.12
 
 ```bash
 pip install -r requirements.txt
