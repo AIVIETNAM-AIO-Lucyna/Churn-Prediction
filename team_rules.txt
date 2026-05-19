@@ -18,3 +18,4 @@ Các type khuyên dùng:
     model	      train/update model
     style	      format code
     test	      thêm test
+    chore         việc vặt
