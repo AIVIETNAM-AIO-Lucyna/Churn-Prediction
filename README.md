@@ -43,24 +43,25 @@ The project includes an end-to-end machine learning pipeline:
 
 ## Run App
 
+Note: Install python --version 3.11 or 3.12
+
 ### 1. Create and activate virtual environment
 
 **Windows**
 
 ```bash
-python -m venv .venv
+py -3.12 --version
 .venv\Scripts\activate
 ```
 
 **Mac/Linux**
 
 ```bash
-python3 -m venv .venv
+python3.12 -m venv .venv
 source .venv/bin/activate
 ```
 
 ### 2. Install required libraries
-Note: Install python --version 3.11 or 3.12
 
 ```bash
 pip install -r requirements.txt
