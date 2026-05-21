@@ -1,5 +1,15 @@
 import streamlit as st
 import pandas as pd
+import sys
+import os
+BASE_DIR = os.path.dirname(
+    os.path.dirname(
+        os.path.abspath(__file__)
+    )
+)
+
+sys.path.insert(0, BASE_DIR)
+from src.predict import predict_customer
 
 st.set_page_config(
     page_title="Customer Churn Prediction",
@@ -35,7 +45,7 @@ with col1:
 
     city_tier = st.selectbox(
         "City Tier",
-        ["1", "2", "3"]
+        [1,2,3]
     )
 
     satisfaction = st.number_input(
@@ -147,61 +157,41 @@ predict_btn = st.button(
 if predict_btn:
 
     input_data = pd.DataFrame({
-        "Gender": [gender],
-        "Tenure": [tenure],
-        "PreferredLoginDevice": [preferred_login_device],
-        "CityTier": [city_tier],
-        "SatisfactionScore": [satisfaction],
-        "MaritalStatus": [marriage],
-        "NumberOfAddress": [number_of_addresses],
-        "WarehouseToHome": [warehouse_to_home],
-        "HourSpendOnApp": [hour_spend],
-        "PreferredPaymentMode": [preferred_payment_mode],
-        "NumberOfDeviceRegistered": [device_registration],
-        "PreferedOrderCat": [preferred_order_cat],
-        "Complaint": [complaint],
-        "OrderAmountHikeFromlastYear": [order_amount],
-        "CouponUsed": [used_coupon],
-        "OrderCount": [order_count],
-        "DaySinceLastOrder": [day_since_last_order],
-        "CashbackAmount": [cash_back_amount]
+        "Gender":[gender],
+        "Tenure":[tenure],
+        "PreferredLoginDevice":[preferred_login_device],
+        "CityTier":[int(city_tier)],
+        "SatisfactionScore":[satisfaction],
+        "MaritalStatus":[marriage],
+        "NumberOfAddress":[number_of_addresses],
+        "WarehouseToHome":[warehouse_to_home],
+        "HourSpendOnApp":[hour_spend],
+        "PreferredPaymentMode":[preferred_payment_mode],
+        "NumberOfDeviceRegistered":[device_registration],
+        "PreferedOrderCat":[preferred_order_cat],
+
+        "Complain":[complaint],
+
+        "OrderAmountHikeFromlastYear":[order_amount],
+        "CouponUsed":[used_coupon],
+        "OrderCount":[order_count],
+        "DaySinceLastOrder":[day_since_last_order],
+        "CashbackAmount":[cash_back_amount]
     })
-
-    # Dummy prediction logic
-    # Thay bằng model.predict() sau này
-
-    risk_score = 0
-
-    if tenure < 6:
-        risk_score += 1
-
-    if satisfaction <= 2:
-        risk_score += 1
-
-    if complaint > 2:
-        risk_score += 1
-
-    if day_since_last_order > 20:
-        risk_score += 1
-
-    if risk_score >= 2:
-        prediction = 1
-        probability = 0.84
-    else:
-        prediction = 0
-        probability = 0.16
-
+    prediction, probability = predict_customer(
+    input_data
+)
     st.subheader("Prediction Result")
 
     if prediction == 1:
         st.error(
             f"⚠️ Customer is likely to CHURN\n\n"
-            f"Probability: {probability:.2%}"
+            f"Probability: {probability}"
         )
     else:
         st.success(
             f"✅ Customer is likely to STAY\n\n"
-            f"Probability of churn: {probability:.2%}"
+            f"Probability of churn: {probability}"
         )
 
     st.subheader("Input Data")
