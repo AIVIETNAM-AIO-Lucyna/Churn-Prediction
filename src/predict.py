@@ -1,94 +1,83 @@
-import pandas as pd
+# predict.py
+# =========================================
+# LOAD MODEL ĐÃ TRAIN
+# DỰ ĐOÁN CHURN CHO APP.PY
+# =========================================
+
 import joblib
-import os
+import pandas as pd
 
+# =========================================
+# 1. LOAD MODEL
+# =========================================
 
-BASE_DIR = os.path.dirname(
-    os.path.dirname(
-        os.path.abspath(__file__)
-    )
-)
+loaded_data = joblib.load("models/best_model.pkl")
 
-MODEL_PATH = os.path.join(
-    BASE_DIR,
-    "models",
-    "best_model.pkl"
-)
+model = loaded_data["model"]
+scaler = loaded_data["scaler"]
+feature_columns = loaded_data["feature_columns"]
+model_name = loaded_data["model_name"]
 
-TRAIN_DATA_PATH = os.path.join(
-    BASE_DIR,
-    "data",
-    "processed",
-    "cleaned_data.csv"
-)
+print(f"Loaded model: {model_name}")
 
+# =========================================
+# 2. HÀM PREPROCESS INPUT
+# =========================================
 
-class ChurnPredictor:
+def preprocess_input(input_data):
+    """
+    input_data: dict hoặc DataFrame
+    """
 
-    def __init__(self):
+    # Nếu input là dict -> convert DataFrame
+    if isinstance(input_data, dict):
+        df = pd.DataFrame([input_data])
 
-        self.model = joblib.load(
-            MODEL_PATH
-        )
+    else:
+        df = input_data.copy()
 
-        train_df = pd.read_csv(
-            TRAIN_DATA_PATH
-        )
+    # Xóa CustomerID nếu có
+    df = df.drop(columns=["CustomerID"], errors="ignore")
 
-        self.feature_columns = train_df.drop(
-            ["CustomerID", "Churn"],
-            axis=1,
-            errors="ignore"
-        ).columns
+    # Đồng bộ cột với train
+    df = df.reindex(columns=feature_columns, fill_value=0)
 
+    return df
 
-    def preprocess(self, input_df):
-        input_df = input_df.drop(
-            ["CustomerID"],
-            axis=1,
-            errors="ignore"
-        )
+# =========================================
+# 3. HÀM PREDICT
+# =========================================
 
-        processed = pd.get_dummies(
-            input_df,
-            drop_first=False
-        )
+def predict_churn(input_data):
+    """
+    Return:
+    {
+        "prediction": 0/1,
+        "probability": float,
+        "label": "Churn" / "No Churn"
+    }
+    """
 
-        processed = processed.reindex(
-            columns=self.feature_columns,
-            fill_value=0
-        )
-        processed = processed.astype(float)
+    # preprocess
+    df = preprocess_input(input_data)
 
-        return processed
+    # scale nếu model cần scaler
+    if scaler is not None:
+        model_input = scaler.transform(df)
+    else:
+        model_input = df
 
+    # predict
+    prediction = model.predict(model_input)[0]
 
-    def predict(self, input_df):
+    # probability churn = 1
+    probability = model.predict_proba(model_input)[0][1]
 
-        processed_input = self.preprocess(
-            input_df
-        )
+    # label
+    label = "Churn" if prediction == 1 else "No Churn"
 
-        print(processed_input.T)
-
-        prediction = self.model.predict(
-            processed_input
-        )[0]
-
-        probability = self.model.predict_proba(
-            processed_input
-        )[0][1]
-
-        return prediction, probability
-
-
-predictor = ChurnPredictor()
-
-
-def predict_customer(input_df):
-
-    prediction, probability = predictor.predict(
-        input_df
-    )
-
-    return prediction, probability
+    return {
+        "prediction": int(prediction),
+        "probability": float(round(probability, 4)),
+        "label": label
+    }
