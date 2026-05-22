@@ -1,9 +1,13 @@
-# Churn-Prediction
+# E-Commerce Customer Churn Prediction
 
 ## Project Overview
 
-This project predicts whether an e-commerce customer is likely to leave (churn) or continue using the service based on customer behavior and transaction data.
-[Dataset](https://drive.google.com/drive/folders/1fJryIhGXF4S1N6PcA0CEZQmo1WwqGAkt?usp=sharing)
+This project predict whether a customer is likely to churn or stay with the service (churn) or continue using the service based on customer behavior and transaction data.
+## Dataset
+
+Dataset download:
+
+[Google Drive Dataset](https://drive.google.com/drive/folders/1fJryIhGXF4S1N6PcA0CEZQmo1WwqGAkt?usp=sharing)
 
 The project includes an end-to-end machine learning pipeline:
 
@@ -14,7 +18,6 @@ The project includes an end-to-end machine learning pipeline:
 - Best model selection
 - Model persistence using `.pkl`
 - Real-time prediction through a Streamlit web application
-
 
 ### Features
 
@@ -27,6 +30,17 @@ The project includes an end-to-end machine learning pipeline:
   - Random Forest
 - Save and load the best-performing model
 - Interactive web interface with Streamlit
+- Batch prediction using CSV upload
+- Download prediction results as CSV
+
+### Evaluation Metrics
+
+Models were evaluated using:
+
+- Accuracy
+- Recall
+- F1-score
+- ROC-AUC
 
 ### Tech Stack
 
@@ -39,7 +53,10 @@ The project includes an end-to-end machine learning pipeline:
 - Seaborn
 - Streamlit
 
----
+## Application Preview
+
+![App Screenshot](reports/screenshot/screenshot2.png)
+![App Screenshot](reports/screenshot/screenshot1.png)
 
 ## Run App
 
@@ -50,7 +67,7 @@ Note: Install python --version 3.11 or 3.12
 **Windows**
 
 ```bash
-py -3.12 --version
+py -3.12 -m venv .venv
 .venv\Scripts\activate
 ```
 
@@ -80,27 +97,36 @@ streamlit run app/app.py
 ```text
 Churn-Prediction/
 │
-├── app/
-│   └── app.py                 # Streamlit UI
-│
-├── src/
-│   └── predict.py             # Prediction pipeline
-│
-├── models/
-│   └── best_model.pkl         # Trained model
+├── app/                                
+│    └── app.py                          # Streamlit UI
 │
 ├── data/
-│   └── processed/
-│       └── cleaned_data.csv   # Processed dataset
+│     └──processed/                     
+│           ├── train.csv
+│           ├── test.csv
+│           ├── cleaned_data.csv        # Train dataset
+│           └── cleaned_test_data.csv   # Val dataset
 │
-├── notebooks/
-│   ├── eda.py                 # Data preprocessing and EDA
-│   └── modeling.py            # Training and model comparison
+├── models/                       
+│    └── best_model.pkl                  # Trained model
 │
-├── reports/
-│   ├── model_results.csv
-│   └── feature_importance.png
+├── notebooks/                    
+│    ├── eda.ipynb
+│    └── modeling.ipynb
 │
-├── requirements.txt
-└── README.md
+├── reports/        
+│    ├── screenshot/
+│    ├── data_dictionary.md
+│    ├── feature_importance.png
+│    ├── model_results.csv
+│    └── test_checklist.md
+│
+├── src/      
+│    ├── eda.py                          # Data preprocessing and EDA                    
+│    ├── modeling.py                     # Training and model comparison
+│    └── predict.py                      # Prediction pipeline
+│
+├── .gitignore
+├── README.md
+└── requirements.txt
 ```
