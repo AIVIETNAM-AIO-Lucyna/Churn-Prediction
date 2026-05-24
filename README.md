@@ -58,6 +58,11 @@ Models were evaluated using:
 ![App Screenshot](reports/screenshot/screenshot2.png)
 ![App Screenshot](reports/screenshot/screenshot1.png)
 
+## Deploy
+
+Website deploy: 
+[Web](https://prediction-arasaka.streamlit.app)
+
 ## Run App
 
 Note: Install python --version 3.11 or 3.12
