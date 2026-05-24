@@ -1,6 +1,6 @@
 # app.py
 # =========================================
-# CUSTOMER CHURN PREDICTION APP
+# E-COMMERCE CUSTOMER CHURN PREDICTION APP
 # STREAMLIT APP
 # =========================================
 
@@ -22,7 +22,7 @@ from src.predict import predict_churn
 # =========================================
 
 st.set_page_config(
-    page_title="Customer Churn Prediction",
+    page_title="E-Commerce Churn Prediction",
     page_icon="📉",
     layout="centered"
 )
@@ -31,9 +31,9 @@ st.set_page_config(
 # TITLE
 # =========================================
 
-st.title("📉 Customer Churn Prediction")
+st.title("📉 E-Commerce Customer Churn Prediction")
 st.markdown(
-    "Predicting whether customers will leave a service using Machine Learning"
+    "Predict whether an e-commerce customer is likely to churn using Machine Learning."
 )
 
 st.divider()
@@ -46,195 +46,240 @@ st.subheader("📋 Customer Information")
 
 with st.form("prediction_form"):
 
-    # ==============================
-    # NUMERIC FEATURES
-    # ==============================
-
-    age = st.number_input(
-        "Age",
-        min_value=18,
-        max_value=100,
-        value=35
-    )
+    st.markdown("### Numeric Features")
 
     tenure = st.number_input(
-        "Tenure (months)",
+        "Tenure",
         min_value=0,
-        max_value=120,
+        max_value=100,
         value=12
     )
 
-    monthly_charges = st.number_input(
-        "Monthly Charges",
+    city_tier = st.selectbox(
+        "City Tier",
+        [1, 2, 3]
+    )
+
+    warehouse_to_home = st.number_input(
+        "Warehouse To Home Distance",
+        min_value=0,
+        max_value=200,
+        value=10
+    )
+
+    hour_spend_on_app = st.number_input(
+        "Hour Spend On App",
         min_value=0.0,
-        max_value=1000.0,
-        value=80.0
+        max_value=24.0,
+        value=3.0
     )
 
-    total_charges = st.number_input(
-        "Total Charges",
+    number_of_device_registered = st.number_input(
+        "Number Of Device Registered",
+        min_value=1,
+        max_value=10,
+        value=3
+    )
+
+    satisfaction_score = st.selectbox(
+        "Satisfaction Score",
+        [1, 2, 3, 4, 5]
+    )
+
+    number_of_address = st.number_input(
+        "Number Of Address",
+        min_value=1,
+        max_value=30,
+        value=2
+    )
+
+    complain = st.selectbox(
+        "Complain",
+        [0, 1],
+        format_func=lambda x: "Yes" if x == 1 else "No"
+    )
+
+    order_amount_hike = st.number_input(
+        "Order Amount Hike From Last Year",
+        min_value=0,
+        max_value=100,
+        value=15
+    )
+
+    coupon_used = st.number_input(
+        "Coupon Used",
+        min_value=0,
+        max_value=100,
+        value=1
+    )
+
+    order_count = st.number_input(
+        "Order Count",
+        min_value=0,
+        max_value=100,
+        value=5
+    )
+
+    day_since_last_order = st.number_input(
+        "Day Since Last Order",
+        min_value=0,
+        max_value=365,
+        value=7
+    )
+
+    cashback_amount = st.number_input(
+        "Cashback Amount",
         min_value=0.0,
-        max_value=100000.0,
-        value=1000.0
+        max_value=10000.0,
+        value=150.0
     )
 
-    # ==============================
-    # CATEGORICAL FEATURES
-    # ==============================
+    st.markdown("### Categorical Features")
 
-    gender = st.selectbox(
-        "Gender",
-        ["Male", "Female"]
-    )
-
-    senior_citizen = st.selectbox(
-        "Senior Citizen",
-        [0, 1]
-    )
-
-    partner = st.selectbox(
-        "Partner",
-        ["Yes", "No"]
-    )
-
-    dependents = st.selectbox(
-        "Dependents",
-        ["Yes", "No"]
-    )
-
-    phone_service = st.selectbox(
-        "Phone Service",
-        ["Yes", "No"]
-    )
-
-    internet_service = st.selectbox(
-        "Internet Service",
-        ["DSL", "Fiber optic", "No"]
-    )
-
-    contract = st.selectbox(
-        "Contract",
-        ["Month-to-month", "One year", "Two year"]
-    )
-
-    payment_method = st.selectbox(
-        "Payment Method",
+    preferred_login_device = st.selectbox(
+        "Preferred Login Device",
         [
-            "Electronic check",
-            "Mailed check",
-            "Bank transfer (automatic)",
-            "Credit card (automatic)"
+            "Computer",
+            "Mobile Phone",
+            "Phone"
+        ]
+    )
+    preferred_payment_mode = st.selectbox(
+        "Preferred Payment Mode",
+        [
+            "COD",
+            "Cash on Delivery",
+            "Credit Card",
+            "Debit Card",
+            "E wallet",
+            "UPI"
         ]
     )
 
-    # ==============================
-    # SUBMIT BUTTON
-    # ==============================
-
-    submit_button = st.form_submit_button(
-        "🔍 Predict Churn"
+    gender = st.selectbox(
+        "Gender",
+        ["Female", "Male"]
     )
+
+    preferred_order_cat = st.selectbox(
+        "Preferred Order Category",
+        [
+            "Fashion",
+            "Grocery",
+            "Laptop & Accessory",
+            "Mobile",
+            "Mobile Phone",
+            "Others"
+        ]
+    )
+
+    marital_status = st.selectbox(
+        "Marital Status",
+        [
+            "Divorced",
+            "Married",
+            "Single"
+        ]
+    )
+
+    submit_button = st.form_submit_button("🔍 Predict Churn")
 
 # =========================================
 # PREDICTION
 # =========================================
 
-if submit_button:
+    if submit_button:
 
-    # ======================================
-    # BUILD INPUT DATA
-    # ======================================
-
-    input_data = {
-        "Age": age,
+        input_data = {
+        # Numeric features
         "Tenure": tenure,
-        "MonthlyCharges": monthly_charges,
-        "TotalCharges": total_charges,
+        "CityTier": city_tier,
+        "WarehouseToHome": warehouse_to_home,
+        "HourSpendOnApp": hour_spend_on_app,
+        "NumberOfDeviceRegistered": number_of_device_registered,
+        "SatisfactionScore": satisfaction_score,
+        "NumberOfAddress": number_of_address,
+        "Complain": complain,
+        "OrderAmountHikeFromlastYear": order_amount_hike,
+        "CouponUsed": coupon_used,
+        "OrderCount": order_count,
+        "DaySinceLastOrder": day_since_last_order,
+        "CashbackAmount": cashback_amount,
 
-        # Example encoding
-        "Gender_Male": 1 if gender == "Male" else 0,
+        # One-hot encoded features
+        "PreferredLoginDevice_Mobile Phone":
+            1 if preferred_login_device == "Mobile Phone" else 0,
 
-        "SeniorCitizen": senior_citizen,
+        "PreferredLoginDevice_Phone":
+            1 if preferred_login_device == "Phone" else 0,
 
-        "Partner_Yes": 1 if partner == "Yes" else 0,
+        "PreferredPaymentMode_COD":
+            1 if preferred_payment_mode == "COD" else 0,
 
-        "Dependents_Yes": 1 if dependents == "Yes" else 0,
+        "PreferredPaymentMode_Cash on Delivery":
+            1 if preferred_payment_mode == "Cash on Delivery" else 0,
 
-        "PhoneService_Yes": 1 if phone_service == "Yes" else 0,
+        "PreferredPaymentMode_Credit Card":
+            1 if preferred_payment_mode == "Credit Card" else 0,
 
-        "InternetService_Fiber optic":
-            1 if internet_service == "Fiber optic" else 0,
+        "PreferredPaymentMode_Debit Card":
+            1 if preferred_payment_mode == "Debit Card" else 0,
 
-        "InternetService_No":
-            1 if internet_service == "No" else 0,
+        "PreferredPaymentMode_E wallet":
+            1 if preferred_payment_mode == "E wallet" else 0,
 
-        "Contract_One year":
-            1 if contract == "One year" else 0,
+        "PreferredPaymentMode_UPI":
+            1 if preferred_payment_mode == "UPI" else 0,
 
-        "Contract_Two year":
-            1 if contract == "Two year" else 0,
+        "Gender_Male":
+            1 if gender == "Male" else 0,
 
-        "PaymentMethod_Credit card (automatic)":
-            1 if payment_method == "Credit card (automatic)" else 0,
+        "PreferedOrderCat_Grocery":
+            1 if preferred_order_cat == "Grocery" else 0,
 
-        "PaymentMethod_Electronic check":
-            1 if payment_method == "Electronic check" else 0,
+        "PreferedOrderCat_Laptop & Accessory":
+            1 if preferred_order_cat == "Laptop & Accessory" else 0,
 
-        "PaymentMethod_Mailed check":
-            1 if payment_method == "Mailed check" else 0,
-    }
+        "PreferedOrderCat_Mobile":
+            1 if preferred_order_cat == "Mobile" else 0,
 
-    # ======================================
-    # PREDICT
-    # ======================================
+        "PreferedOrderCat_Mobile Phone":
+            1 if preferred_order_cat == "Mobile Phone" else 0,
 
-    result = predict_churn(input_data)
+        "PreferedOrderCat_Others":
+            1 if preferred_order_cat == "Others" else 0,
+        "MaritalStatus_Married":
+            1 if marital_status == "Married" else 0,
 
-    prediction = result["prediction"]
-    probability = result["probability"]
-    label = result["label"]
+        "MaritalStatus_Single":
+            1 if marital_status == "Single" else 0,
+        }
 
-    st.divider()
+        result = predict_churn(input_data)
 
-    st.subheader("📊 Prediction Result")
+        prediction = result["prediction"]
+        probability = result["probability"]
+        label = result["label"]
 
-    # ======================================
-    # RESULT UI
-    # ======================================
+        st.divider()
 
-    if prediction == 1:
+        st.subheader("📊 Prediction Result")
 
-        st.error(
-            f"⚠️ Customer is likely to CHURN"
+        if prediction == 1:
+            st.error("⚠️ Customer is likely to CHURN")
+        else:
+            st.success("✅ Customer is likely to STAY")
+
+        st.metric(
+            label="Churn Probability",
+            value=f"{probability * 100:.2f}%"
         )
 
-    else:
+        st.progress(float(probability))
 
-        st.success(
-            f"✅ Customer is likely to STAY"
-        )
-
-    st.metric(
-        label="Churn Probability",
-        value=f"{probability * 100:.2f}%"
-    )
-
-    # ======================================
-    # PROBABILITY BAR
-    # ======================================
-
-    st.progress(float(probability))
-
-    # ======================================
-    # SHOW INPUT DATA
-    # ======================================
-
-    with st.expander("📄 View Input Data"):
-
-        df = pd.DataFrame([input_data])
-
-        st.dataframe(df)
-
+        with st.expander("📄 View Model Input Data"):
+            df = pd.DataFrame([input_data])
+            st.dataframe(df)
 
 # =========================================
 # BATCH PREDICTION FROM CSV
@@ -248,15 +293,18 @@ st.markdown(
     """
     ### Note:
     - Each row represents one customer.
-    - The CSV file must contain columns that match the data used to train the model.
-    - The CSV file should be formatted as shown below.
+    - CSV columns should match the model feature names.
+    - Missing columns will be filled with `0` automatically.
+    - Extra columns will be ignored automatically.
     """
 )
 
 st.code(
-    """Age,Tenure,MonthlyCharges,TotalCharges,Gender_Male,SeniorCitizen
-35,12,80,1000,1,0
-42,24,120,2500,0,1""",
+    """
+    Tenure,CityTier,WarehouseToHome,HourSpendOnApp,NumberOfDeviceRegistered,SatisfactionScore,NumberOfAddress,Complain,OrderAmountHikeFromlastYear,CouponUsed,OrderCount,DaySinceLastOrder,CashbackAmount,PreferredLoginDevice_Mobile Phone,PreferredLoginDevice_Phone,PreferredPaymentMode_COD,PreferredPaymentMode_Cash on Delivery,PreferredPaymentMode_Credit Card,PreferredPaymentMode_Debit Card,PreferredPaymentMode_E wallet,PreferredPaymentMode_UPI,Gender_Male,PreferedOrderCat_Grocery,PreferedOrderCat_Laptop & Accessory,PreferedOrderCat_Mobile,PreferedOrderCat_Mobile Phone,PreferedOrderCat_Others,MaritalStatus_Married,MaritalStatus_Single
+    12,1,10,3,3,4,2,0,15,1,5,7,150,1,0,0,0,1,0,0,0,1,0,1,0,0,0,0,1
+    6,2,15,4,4,3,3,1,20,2,8,3,220,0,1,1,0,0,0,0,0,0,1,0,1,0,0,1,0
+    24,3,8,2,2,5,4,0,10,5,12,1,320,1,0,0,1,0,1,0,0,1,0,0,0,1,0,0,1""",
     language="csv"
 )
 
@@ -268,45 +316,25 @@ uploaded_file = st.file_uploader(
 if uploaded_file is not None:
 
     try:
-
-        # ==============================
-        # LOAD CSV
-        # ==============================
-
         batch_df = pd.read_csv(uploaded_file)
 
         st.write("Preview data:")
-
         st.dataframe(batch_df.head())
-
-        # ==============================
-        # PREDICT BUTTON
-        # ==============================
 
         if st.button("🚀 Predict CSV"):
 
             results = []
 
-            # ==========================
-            # LOOP EACH CUSTOMER
-            # ==========================
-
             for _, row in batch_df.iterrows():
-
                 customer_data = row.to_dict()
-
-                prediction = predict_churn(customer_data)
+                prediction_result = predict_churn(customer_data)
 
                 results.append({
-                    "Prediction": prediction["label"],
-                    "Probability": prediction["probability"]
+                    "Prediction": prediction_result["label"],
+                    "Churn Probability": prediction_result["probability"]
                 })
 
-            # ==========================
-            # ADD RESULT COLUMNS
-            # ==========================
-
-            results_df = pd.concat(
+                results_df = pd.concat(
                 [
                     batch_df.reset_index(drop=True),
                     pd.DataFrame(results)
@@ -314,20 +342,10 @@ if uploaded_file is not None:
                 axis=1
             )
 
-            # ==========================
-            # SHOW RESULTS
-            # ==========================
-
             st.success("Prediction completed!")
-
             st.dataframe(results_df)
 
-            # ==========================
-            # DOWNLOAD CSV
-            # ==========================
-
             csv = results_df.to_csv(index=False)
-
             st.download_button(
                 label="⬇️ Download Results CSV",
                 data=csv,
@@ -336,14 +354,12 @@ if uploaded_file is not None:
             )
 
     except Exception as e:
-
         st.error(f"Error: {e}")
+
 # =========================================
 # FOOTER
 # =========================================
 
 st.divider()
 
-st.caption(
-    "Machine Learning Customer Churn Prediction App"
-)
+st.caption("Machine Learning E-Commerce Customer Churn Prediction App")
