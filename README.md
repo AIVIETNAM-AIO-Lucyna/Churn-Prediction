@@ -53,15 +53,14 @@ Models were evaluated using:
 - Seaborn
 - Streamlit
 
-## Application Preview
-
-![App Screenshot](reports/screenshot/screenshot2.png)
-![App Screenshot](reports/screenshot/screenshot1.png)
-
 ## Deploy
 
 Website deploy: 
 [Web](https://prediction-arasaka.streamlit.app)
+
+## Demo Video
+
+[![Watch the demo](https://img.youtube.com/vi/vCx9BS2O-HY/maxresdefault.jpg)](https://youtu.be/vCx9BS2O-HY)
 
 ## Run App
 
@@ -94,8 +93,6 @@ pip install -r requirements.txt
 ```bash
 streamlit run app/app.py
 ```
-
----
 
 ## Project Structure
 
