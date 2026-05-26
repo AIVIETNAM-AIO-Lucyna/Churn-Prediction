@@ -60,7 +60,7 @@ Website deploy:
 
 ## Demo Video
 
-[![Watch the demo](https://img.youtube.com/vi/vCx9BS2O-HY/maxresdefault.jpg)](https://youtu.be/vCx9BS2O-HY)
+[![Watch the demo](https://img.youtube.com/vi/U91Sz5uogcI/maxresdefault.jpg)](https://youtu.be/U91Sz5uogcI)
 
 ## Run App
 
